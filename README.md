@@ -31,9 +31,10 @@ docker compose -f docker-compose-local.yml up -d
 When application run first time in database migrations and seeders will run
 automatically.
 
-### Postman collection - [Postman collection](ArionCoder.postman_collection.json)
-### DB diagram - [Diagram](diagram.drawio) (*https://app.diagrams.net/*)
-### User credentials - [Credentials](api/config/demo.php)
+### [Postman collection](ArionCoder.postman_collection.json)
+### [Postman environment](Arion.postman_environment.json)
+### [DB Diagram](diagram.drawio) (*https://app.diagrams.net/*)
+### [Mocked User Credentials](api/config/demo.php)
 #### When user is logged in used first organization from organization list. Switch organizations by */switch* route.
 ### WEB is available on http://localhost:5173 (local)
 ### API is available on http://localhost:8080 (local)
