@@ -4,11 +4,17 @@ services:
   # PHP-FPM (Laravel)
   app:
     environment:
+      PHP_XDEBUG: 1
+      PHP_XDEBUG_MODE: debug
+      PHP_IDE_CONFIG: serverName=arion.local
+      PHP_XDEBUG_IDEKEY: PHPSTORM
+      PHP_XDEBUG_START_WITH_REQUEST: trigger
+      PHP_XDEBUG_CLIENT_HOST: host.docker.internal
       APP_ROLE: app
       RUN_MIGRATIONS: "true"
     build:
       context: ./api
-      dockerfile: .docker/Dockerfile.php
+      dockerfile: .docker/Dockerfile-local.php
     container_name: app
     depends_on:
       - db
@@ -18,8 +24,11 @@ services:
     volumes:
       - ./api:/var/www/html
       - ./api/storage:/var/www/html/storage
+      - ./api/.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - appnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   # Queues (queue:work)
   queue:

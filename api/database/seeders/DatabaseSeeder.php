@@ -1,6 +1,6 @@
 <?php
 
-namespace database\seeders;
+namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,6 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
+        $this->call([
+            OrganizationSeeder::class,
+            ProjectSeeder::class,
+            TaskSeeder::class,
+            NotificationSeeder::class,
+            OrganizationUserSeeder::class,
+            ProjectMemberSeeder::class,
+        ]);
     }
 }

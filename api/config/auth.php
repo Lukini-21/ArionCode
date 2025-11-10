@@ -111,5 +111,5 @@ return [
     */
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
-
+    'mock_enabled' => env('AUTH_MOCK_ENABLED', false),
 ];
