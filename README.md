@@ -35,3 +35,4 @@ automatically.
 ### DB diagram - [diagram.drawio](diagram.drawio) (https://app.diagrams.net/) 
 ### User credentials - [demo.php](api/config/demo.php)
 #### When user is logged in used first organization from organization list. Switch organizations by */switch* route.
+### APP is available on http://localhost:5173/ (local)
