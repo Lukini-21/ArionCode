@@ -56,7 +56,7 @@ class ProjectPolicy
     {
         return $user->hasRole(Role::Admin)
             || ($user->hasRole(Role::Manager) && $project->members->contains(fn($m) =>
-                    $m->pivot->user_id === $user->uuid && $m->pivot->role === Role::Manager->value
+                    $m->user_id === $user->uuid && $m->role === Role::Manager
                 ));
     }
 
@@ -66,19 +66,19 @@ class ProjectPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasRole(Role::Admin);
+        return $user->hasRole(Role::Admin) || $user->hasRole(Role::Manager);
     }
 
     /**
      * @param User $user
-     * @param Task $task
+     * @param Project $project
      * @return bool
      */
-    public function addMember(User $user, Task $task): bool
+    public function addMember(User $user, Project $project): bool
     {
         return $user->hasRole(Role::Admin)
-            || ($user->hasRole(Role::Manager) && $task->project->members->contains(fn($m) =>
-                    $m->pivot->user_id === $user->uuid && $m->pivot->role === Role::Manager->value
+            || ($user->hasRole(Role::Manager) && $project->members->contains(fn($m) =>
+                    $m->user_id === $user->uuid && ($m->role === Role::Manager)
                 ));
     }
 }

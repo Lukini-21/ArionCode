@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\AuthService;
 use App\Services\NotificationService;
 use App\Services\OrganizationService;
 use App\Services\ProjectService;
@@ -16,7 +15,6 @@ class ServiceLayerProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(AuthService::class);
         $this->app->singleton(OrganizationService::class);
         $this->app->singleton(ProjectService::class);
         $this->app->singleton(TaskService::class);

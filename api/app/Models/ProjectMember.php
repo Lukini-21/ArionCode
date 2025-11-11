@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Contracts\ActivityLog\EntityType;
 use App\Contracts\User\Role;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Project $project
  * @property \App\Support\Auth\User $member
  */
-class ProjectMember extends Model
+class ProjectMember extends BaseModel
 {
     /**
      * @var \class-string[]
@@ -30,6 +30,9 @@ class ProjectMember extends Model
         'updated_at' => 'datetime',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'starts_at',
         'ends_at',
@@ -46,19 +49,22 @@ class ProjectMember extends Model
         return $this->belongsTo(Project::class);
     }
 
-
     /**
      * @return \App\Support\Auth\User|null
      */
     public function getMemberAttribute()
     {
-        $assigneeId = $this->user_id;
-        $mockUsers = collect(config('demo.users', []));
+        $user = \App\Support\Auth\User::getByField("uuid", $this->user_id);
+        $user->role = $this->role;
 
-        $mockUserData = $mockUsers->firstWhere('uuid', $assigneeId);
+        return $user;
+    }
 
-        return $mockUserData
-            ? new \App\Support\Auth\User($mockUserData)
-            : null;
+    /**
+     * @return EntityType
+     */
+    public function getEntityType(): EntityType
+    {
+        return EntityType::ProjectMember;
     }
 }

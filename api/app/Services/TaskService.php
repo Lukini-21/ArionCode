@@ -3,9 +3,6 @@
 namespace App\Services;
 
 use App\Contracts\ActivityLog\EntityType;
-use App\Events\EntityCreated;
-use App\Events\EntityDeleted;
-use App\Events\EntityUpdated;
 use App\Events\TaskAssigned;
 use App\Http\Requests\Task\CommentRequest;
 use App\Http\Requests\Task\SetStatusRequest;
@@ -74,7 +71,6 @@ class TaskService extends AbstractService
     public function create(TaskCreateRequest $request): Task
     {
         $task = Task::query()->create($request->validated());
-        event(new EntityCreated(EntityType::Task, $task, auth()->user()));
         $this->sendAssignNotification($task);
         $this->clearCache();
 
@@ -91,7 +87,7 @@ class TaskService extends AbstractService
         $task = $request->getModel();
         $assigneeId = $task->assignee_id;
         $task->update($request->validated());
-        event(new EntityUpdated(EntityType::Task, $task, auth()->user()));
+
         if (!empty($task->assignee_id) && $task->assignee_id !== $assigneeId) {
             $this->sendAssignNotification($task);
         }
@@ -106,7 +102,6 @@ class TaskService extends AbstractService
      */
     public function delete(TaskDeleteRequest $request): ?bool
     {
-        event(new EntityDeleted(EntityType::Task, $request->getModel(), auth()->user()));
         $result = $request->getModel()->delete();
         Cache::tags([EntityType::Task->value])->flush();
 
@@ -119,8 +114,6 @@ class TaskService extends AbstractService
      */
     public function setStatus(SetStatusRequest $request): void
     {
-        event(new EntityUpdated(EntityType::Task, $request->getModel(), auth()->user()));
-
         $request->getModel()->update($request->validated());
         $this->clearCache();
     }

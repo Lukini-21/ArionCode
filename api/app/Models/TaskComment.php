@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Contracts\ActivityLog\EntityType;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  *
  */
-class TaskComment extends Model
+class TaskComment extends BaseModel
 {
     /**
      * @var string[]
@@ -18,19 +19,19 @@ class TaskComment extends Model
         'body',
     ];
 
+    /**
+     * @return EntityType
+     */
+    public function getEntityType(): EntityType
+    {
+        return EntityType::TaskComment;
+    }
 
     /**
      * @return \App\Support\Auth\User|null
      */
     public function getAuthorAttribute()
     {
-        $assigneeId = $this->author_id;
-        $mockUsers = collect(config('demo.users', []));
-
-        $mockUserData = $mockUsers->firstWhere('uuid', $assigneeId);
-
-        return $mockUserData
-            ? new \App\Support\Auth\User($mockUserData)
-            : null;
+        return \App\Support\Auth\User::getByField("uuid", $this->author_id);
     }
 }

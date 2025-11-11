@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources\Organization;
 
+use App\Support\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrganizationResource extends JsonResource
+class OrganizationUserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,12 +15,14 @@ class OrganizationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $organization = $this->resource;
+        /** @var User $user */
+        $user = $this->resource->user;
 
         return [
-            'id' => $organization->id,
-            'name' => $organization->name,
-            'users' => OrganizationUserResource::collection($organization->users),
+            'name' => $user->name,
+            'email' => $user->email,
+            'uuid' => $user->uuid,
+            'role' => $user->role
         ];
     }
 }

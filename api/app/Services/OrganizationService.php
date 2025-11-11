@@ -21,14 +21,11 @@ class OrganizationService extends AbstractService
      */
     public function getUserAvailableOrganizations(string $userId): Collection
     {
-        $cacheKey = auth()->user()->uuid . "_" . EntityType::Organization->value;
-        return Cache::tags($this->getCacheTags())->remember($cacheKey, 180, function () use ($userId) {
-            return OrganizationUser::query()
-                ->select(['organization_users.role', 'organizations.*'])
-                ->join('organizations', 'organizations.id', '=', 'organization_users.organization_id')
-                ->whereNull('organizations.deleted_at')
-                ->where('user_id', $userId)->get();
-        });
+        return OrganizationUser::query()
+            ->select(['organization_users.role', 'organizations.*'])
+            ->join('organizations', 'organizations.id', '=', 'organization_users.organization_id')
+            ->whereNull('organizations.deleted_at')
+            ->where('user_id', $userId)->get();
     }
 
     /**
@@ -37,7 +34,10 @@ class OrganizationService extends AbstractService
      */
     public function list(FormRequest $request): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return Organization::query()->paginate($request->get('per_page', 20));
+        $cacheKey = auth()->user()->uuid . "_" . EntityType::Organization->value;
+        return Cache::tags($this->getCacheTags())->remember($cacheKey, 180, function () use ($request) {
+            return Organization::query()->with(['users'])->paginate($request->get('per_page', 20));
+        });
     }
 
     /**

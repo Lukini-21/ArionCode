@@ -70,6 +70,6 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return $user->hasRole(Role::Admin);
+        return $user->hasRole(Role::Admin) || $user->hasRole(Role::Manager);
     }
 }

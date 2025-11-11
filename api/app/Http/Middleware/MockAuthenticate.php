@@ -2,10 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\AuthService;
 use App\Support\Auth\User;
 use Closure;
-use Illuminate\Auth\GenericUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +12,6 @@ use Firebase\JWT\Key;
 
 class MockAuthenticate
 {
-    public function __construct(private readonly AuthService $authService)
-    {
-    }
-
     /**
      * Handle an incoming request.
      *
@@ -37,12 +31,12 @@ class MockAuthenticate
                     new Key(env('AUTH_JWT_SECRET', 'local_dev_secret'), 'HS256')
                 );
 
-                $user = $this->authService->getMockedUser($payload->email);
+                $user = User::getByField("email", $payload->email);
 
                 if ($user) {
-                    $user['orgId'] =  $payload->orgId ?? null;
-                    $user['roles'] =  $payload->roles ?? null;
-                    Auth::setUser(new User($user));
+                    $user->orgId =  $payload->orgId ?? null;
+                    $user->roles =  $payload->roles ?? null;
+                    Auth::setUser($user);
                     return $next($request);
                 }
             }

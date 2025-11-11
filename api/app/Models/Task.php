@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Contracts\ActivityLog\EntityType;
 use App\Contracts\Task\Priority;
 use App\Contracts\Task\Status;
 use App\Models\Scopes\TaskScope;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,7 +32,7 @@ use Illuminate\Support\Collection;
  * @property Collection<TaskComment> $comments
  * @property \App\Support\Auth\User $assignee
  */
-class Task extends Model
+class Task extends BaseModel
 {
     use SoftDeletes;
 
@@ -62,11 +62,20 @@ class Task extends Model
     ];
 
     /**
+     * @return EntityType
+     */
+    public function getEntityType(): EntityType
+    {
+        return EntityType::Task;
+    }
+
+    /**
      * @return void
      */
     protected static function booted(): void
     {
         static::addGlobalScope(new TaskScope);
+        parent::booted();
     }
 
     /**
@@ -82,14 +91,7 @@ class Task extends Model
      */
     public function getAssigneeAttribute()
     {
-        $assigneeId = $this->assignee_id;
-        $mockUsers = collect(config('demo.users', []));
-
-        $mockUserData = $mockUsers->firstWhere('uuid', $assigneeId);
-
-        return $mockUserData
-            ? new \App\Support\Auth\User($mockUserData)
-            : null;
+        return \App\Support\Auth\User::getByField("uuid", $this->assignee_id);
     }
 
     /**

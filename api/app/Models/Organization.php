@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Contracts\ActivityLog\EntityType;
 use App\Models\Scopes\OrganizationScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Collection<OrganizationUser> $users
  * @property Collection<Project> $projects
  */
-class Organization extends Model
+class Organization extends BaseModel
 {
     use SoftDeletes;
 
@@ -28,10 +28,18 @@ class Organization extends Model
      * @var string[]
      */
     protected $casts = [
-      'created_at' => 'datetime',
-      'updated_at' => 'datetime',
-      'deleted_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
+
+    /**
+     * @return EntityType
+     */
+    public function getEntityType(): EntityType
+    {
+        return EntityType::Organization;
+    }
 
     /**
      * @return void
@@ -39,6 +47,7 @@ class Organization extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new OrganizationScope);
+        parent::booted();
     }
 
     /**

@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
+use App\Contracts\ActivityLog\EntityType;
 use App\Contracts\Project\Status;
-use App\Contracts\User\Role;
 use App\Models\Scopes\ProjectScope;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,7 +30,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Collection<ProjectMember> $members
  * @property Collection<Task> $task
  */
-class Project extends Model
+class Project extends BaseModel
 {
     use SoftDeletes;
 
@@ -60,11 +58,20 @@ class Project extends Model
     ];
 
     /**
+     * @return EntityType
+     */
+    public function getEntityType(): EntityType
+    {
+        return EntityType::Project;
+    }
+
+    /**
      * @return void
      */
     protected static function booted(): void
     {
         static::addGlobalScope(new ProjectScope);
+        parent::booted();
     }
 
     /**

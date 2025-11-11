@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrganizationUser;
-use App\Services\AuthService;
 use App\Services\OrganizationService;
 use App\Support\Auth\User;
 use Firebase\JWT\JWT;
@@ -17,11 +16,9 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     /**
-     * @param AuthService $authService
      * @param OrganizationService $organizationService
      */
     public function __construct(
-        private readonly AuthService $authService,
         private readonly OrganizationService $organizationService,
     )
     {
@@ -39,13 +36,14 @@ class AuthController extends Controller
         ]);
 
         try {
-            $user = $this->authService->getMockedUser($data['email']);
+            $user = User::getByField("email", $data['email']);
 
-            if (!$user || $data['password'] !== $user['password']) {
+            if (!$user || $data['password'] !== $user->password) {
                 throw new \Exception('Invalid credentials');
             }
+            Auth::setUser($user);
             /** @var \Illuminate\Database\Eloquent\Collection<int, OrganizationUser> $organizations */
-            $organizations = $this->organizationService->getUserAvailableOrganizations($user['uuid']);
+            $organizations = $this->organizationService->getUserAvailableOrganizations($user->uuid);
 
             if (!$organizations->count()) {
                 throw new \Exception();
@@ -54,8 +52,8 @@ class AuthController extends Controller
             $authOrganization = $organizations->first();
 
             $payload = [
-                'sub'   => $user['uuid'],
-                'email' => $user['email'],
+                'sub'   => $user->uuid,
+                'email' => $user->email,
                 'roles'  => $organizations->pluck('role'),
                 'orgId' => $authOrganization->id,
                 'exp'   => now()->addHours(4)->timestamp,
@@ -64,7 +62,6 @@ class AuthController extends Controller
 
             $secret = env('AUTH_JWT_SECRET', 'local_dev_secret');
             $token = JWT::encode($payload, $secret, 'HS256');
-            Auth::setUser(new User($user));
 
             return response()->json([
                 'token' => $token,

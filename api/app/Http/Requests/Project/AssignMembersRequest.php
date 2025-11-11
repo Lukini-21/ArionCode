@@ -15,7 +15,7 @@ class AssignMembersRequest extends BaseRequest
     {
         $this->model = Project::findOrFail($this->route('project'));
 
-        return $this->user()?->can('update', $this->model);
+        return $this->user()?->can('addMember', $this->model);
     }
 
     /**

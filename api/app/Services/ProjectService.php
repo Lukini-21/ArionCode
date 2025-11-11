@@ -4,9 +4,6 @@ namespace App\Services;
 
 use App\Contracts\ActivityLog\EntityType;
 use App\Contracts\User\Role;
-use App\Events\EntityCreated;
-use App\Events\EntityDeleted;
-use App\Events\EntityUpdated;
 use App\Http\Requests\Project\AssignMembersRequest;
 use App\Http\Requests\Project\ProjectCreateRequest;
 use App\Http\Requests\Project\ProjectDeleteRequest;
@@ -71,7 +68,7 @@ class ProjectService extends AbstractService
                 'user_id' => $user->uuid,
                 'role' => Role::Manager
             ]);
-            event(new EntityCreated(EntityType::Project, $project, auth()->user()));
+
             $this->clearCache();
             return $project;
         });
@@ -85,7 +82,6 @@ class ProjectService extends AbstractService
     {
         $project = $request->getModel();
         $project->update($request->validated());
-        event(new EntityUpdated(EntityType::Project, $project, auth()->user()));
         $this->clearCache();
 
         return $project;
@@ -97,7 +93,6 @@ class ProjectService extends AbstractService
      */
     public function delete(ProjectDeleteRequest $request): ?bool
     {
-        event(new EntityDeleted(EntityType::Project, $request->getModel(), auth()->user()));
         $result = $request->getModel()->delete();
         $this->clearCache();
 
@@ -125,7 +120,6 @@ class ProjectService extends AbstractService
      */
     public function setStatus(SetStatusRequest $request): void
     {
-        event(new EntityUpdated(EntityType::Project, $request->getModel(), auth()->user()));
         $this->clearCache();
 
         $request->getModel()->update($request->validated());
@@ -139,7 +133,6 @@ class ProjectService extends AbstractService
     {
         $project = $request->getModel();
         $userIds = $request->validated()['ids'] ?? null;
-        event(new EntityUpdated(EntityType::Project, $request->getModel(), auth()->user()));
 
         foreach ($userIds as $id) {
             $project->members()->firstOrCreate(['user_id' => $id]);

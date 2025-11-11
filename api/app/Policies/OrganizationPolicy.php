@@ -39,16 +39,15 @@ class OrganizationPolicy
     {
         return $user->hasRole(Role::Admin)
             && $organization->users->contains(fn($u) =>
-                $u->pivot->user_id === $user->uuid && $u->pivot->role === Role::Admin->value
+                $u->user_id === $user->uuid && $u->role === Role::Admin
             );
     }
 
     /**
      * @param User $user
-     * @param Organization $organization
      * @return bool
      */
-    public function delete(User $user, Organization $organization): bool
+    public function delete(User $user): bool
     {
         return $user->hasRole(Role::Admin);
     }
