@@ -18,6 +18,11 @@ Route::prefix('auth')->group(function () {
 Route::get('/health', fn () => ['status' => 'ok']);
 Route::post('/switch', [SwitchController::class, 'switch']);
 
+Route::prefix('notifications')->group(function () {
+    Route::post('/{notification}/set-as-read', [NotificationController::class, 'setAsRead']);
+    Route::post('/set-all-as-read', [NotificationController::class, 'setAllAsRead']);
+});
+
 // Resource routes
 Route::apiResources([
     'organizations' => OrganizationController::class,
@@ -36,6 +41,3 @@ Route::prefix('tasks')->group(function () {
     Route::post('/{task}/add-comment', [TaskController::class, 'addComment']);
 });
 
-Route::prefix('notifications')->group(function () {
-    Route::post('/{notification}/set-as-read', [NotificationController::class, 'setAsRead']);
-});

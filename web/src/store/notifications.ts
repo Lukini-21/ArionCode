@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import api from '../api/client'
 
 export const useNotificationStore = defineStore('notifications', {
   state: () => ({
@@ -10,12 +11,26 @@ export const useNotificationStore = defineStore('notifications', {
       this.items.unshift(n)
       this.unreadCount++
     },
-    markAllRead() {
+    async markAllRead() {
       this.unreadCount = 0
+      try {
+        await api.post('/notifications/set-all-as-read')
+        await this.loadNotifications()
+      } catch (error) {
+        console.log(error)
+      }
     },
     clear() {
       this.items = []
       this.unreadCount = 0
     },
+    async loadNotifications(n: any)  {
+      try {
+        const { data } = await api.get('/notifications')
+        this.items = data.data
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
 })

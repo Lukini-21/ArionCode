@@ -29,4 +29,5 @@ import { useNotificationStore } from '../store/notifications'
 
 const open = ref(false)
 const store = useNotificationStore()
+store.loadNotifications()
 </script>

@@ -110,6 +110,7 @@ class ProjectService extends AbstractService
         return function ($query) use ($request) {
             $query->when($request->filled('search'), fn($query) => $query->whereLike('name', "%{$request->input('search')}%"));
             $query->when($request->filled('status'), fn($query) => $query->where('status', $request->input('status')));
+            $query->when($request->filled('organization_id'), fn($query) => $query->where('organization_id', $request->input('organization_id')));
             // other filters
         };
     }
@@ -141,6 +142,6 @@ class ProjectService extends AbstractService
 
     protected function getCacheTags(): array
     {
-        return [EntityType::Project->value, 'user_' . auth()->user()->uuid];
+        return [EntityType::Project->value];
     }
 }

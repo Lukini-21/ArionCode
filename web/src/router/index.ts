@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../store/auth'
 import Login from '../pages/Login.vue'
-import DashboardLayout from '../layouts/DashboardLayout.vue'
 import Projects from '../pages/Projects.vue'
 import Tasks from '../pages/Tasks.vue'
 import Notifications from '../pages/Notifications.vue'
@@ -11,7 +10,6 @@ const routes = [
   { path: '/login', component: Login },
   {
     path: '/',
-    component: DashboardLayout,
     children: [
       { path: 'projects', component: Projects },
       { path: 'tasks', component: Tasks },

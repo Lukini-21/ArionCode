@@ -21,7 +21,7 @@ class NotificationService extends AbstractService
         $cacheKey = auth()->user()->uuid . "_" . EntityType::Notification->value;
         return Cache::tags($this->getCacheTags())->remember($cacheKey, 180, function () use ($request) {
             return Notification::query()
-                ->when($request->input('unread', false), function ($query) {
+                ->when($request->input('unread', true), function ($query) {
                     return $query->whereNull('read_at');
                 })
                 ->orderBy($request->input('sortBy', 'id'), $request->input('sortOrder', 'asc'))
@@ -49,7 +49,7 @@ class NotificationService extends AbstractService
 
     /**
      * @param int $id
-     * @return mixed
+     * @return void
      */
     public function setAsRead(int $id): void
     {
@@ -58,10 +58,19 @@ class NotificationService extends AbstractService
     }
 
     /**
+     * @return void
+     */
+    public function setAllAsRead(): void
+    {
+        Notification::query()->update(['read_at' => now()]);
+        $this->clearCache();
+    }
+
+    /**
      * @return array
      */
     protected function getCacheTags(): array
     {
-        return [EntityType::Notification->value, 'user_' . auth()->user()->uuid];
+        return [EntityType::Notification->value];
     }
 }

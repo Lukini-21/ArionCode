@@ -144,6 +144,6 @@ class TaskService extends AbstractService
 
     protected function getCacheTags(): array
     {
-        return [EntityType::Task->value, 'user_' . auth()->user()->uuid];
+        return [EntityType::Task->value];
     }
 }

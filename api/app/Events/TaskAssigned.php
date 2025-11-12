@@ -28,15 +28,23 @@ class TaskAssigned
         $this->task = $task;
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
     public function broadcastOn(): array
     {
+        // каждому пользователю — свой приватный канал
+        return [new PrivateChannel('users.' . $this->task->assignee_id)];
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'TaskAssigned';
+    }
+
+    public function broadcastWith(): array
+    {
         return [
-            new PrivateChannel('channel-name'),
+            'id' => $this->task->id,
+            'title' => $this->task->title,
+            'status' => $this->task->status,
         ];
     }
 }

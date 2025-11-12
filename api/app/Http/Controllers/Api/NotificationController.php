@@ -83,4 +83,15 @@ class NotificationController extends Controller
 
         return ApiResponse::success();
     }
+
+    /**
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setAllAsRead()
+    {
+        $this->notificationService->setAllAsRead();
+
+        return ApiResponse::success();
+    }
 }

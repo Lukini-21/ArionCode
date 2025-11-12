@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Contracts\ActivityLog\EntityType;
 use App\Models\Organization;
 use App\Models\OrganizationUser;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -54,6 +53,6 @@ class OrganizationService extends AbstractService
      */
     protected function getCacheTags(): array
     {
-        return [EntityType::Organization->value, 'user_' . auth()->user()->uuid];
+        return [EntityType::Organization->value];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Project;
 
+use App\Http\Resources\Organization\OrganizationResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,6 +30,7 @@ class ProjectResource extends JsonResource
             'ends_at' => $project->ends_at,
             'created_at' => $project->created_at,
             'tasks_count' => $project->tasks()->count(),
+            'organization' => OrganizationResource::make($project->organization),
         ];
     }
 }

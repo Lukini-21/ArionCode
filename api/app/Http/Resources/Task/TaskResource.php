@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Task;
 
+use App\Http\Resources\Project\ProjectResource;
 use App\Http\Resources\UserResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ class TaskResource extends JsonResource
             'depends_on' => $task->dependentOn->pluck('id'),
             'depended_tasks' => $task->dependedTasks->pluck('id'),
             'comments' => $task->comments,
+            'project' => ProjectResource::make($task->project),
         ];
     }
 }
