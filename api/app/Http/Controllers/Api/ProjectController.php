@@ -10,7 +10,6 @@ use App\Http\Requests\Project\ProjectListRequest;
 use App\Http\Requests\Project\ProjectUpdateRequest;
 use App\Http\Requests\Project\SetStatusRequest;
 use App\Http\Resources\Project\ProjectResource;
-use App\Http\Resources\Task\TaskResource;
 use App\Services\ProjectService;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -53,7 +52,7 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        return ApiResponse::success(TaskResource::make($this->projectService->get($id)));
+        return ApiResponse::success(ProjectResource::make($this->projectService->get($id)));
     }
 
     /**

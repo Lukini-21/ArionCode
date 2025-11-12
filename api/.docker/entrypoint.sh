@@ -4,11 +4,8 @@ set -e
 cd /var/www/html
 
 if [ ! -f .env ]; then
-    echo ".env not found. Copying from .env.example..."
-    cp .env.example .env
-    echo ".env file created from .env.example"
-else
-    echo ".env file already exists"
+  echo ".env not found. Copying from .env.example..."
+  cp .env.example .env
 fi
 
 # --- Wait for MySQL ---

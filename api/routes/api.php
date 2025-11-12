@@ -23,14 +23,6 @@ Route::prefix('notifications')->group(function () {
     Route::post('/set-all-as-read', [NotificationController::class, 'setAllAsRead']);
 });
 
-// Resource routes
-Route::apiResources([
-    'organizations' => OrganizationController::class,
-    'projects' => ProjectController::class,
-    'tasks' => TaskController::class,
-    'notifications' => NotificationController::class,
-]);
-
 Route::prefix('projects')->group(function () {
     Route::post('/{project}/set-status', [ProjectController::class, 'setStatus']);
     Route::post('/{project}/assign-members', [ProjectController::class, 'assignMembers']);
@@ -40,4 +32,13 @@ Route::prefix('tasks')->group(function () {
     Route::post('/{task}/set-status', [TaskController::class, 'setStatus']);
     Route::post('/{task}/add-comment', [TaskController::class, 'addComment']);
 });
+
+// Resource routes
+Route::apiResources([
+    'organizations' => OrganizationController::class,
+    'projects' => ProjectController::class,
+    'tasks' => TaskController::class,
+    'notifications' => NotificationController::class,
+]);
+
 

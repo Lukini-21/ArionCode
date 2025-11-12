@@ -270,13 +270,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/projects/113/assign-members",
+							"raw": "{{url}}/projects/11/assign-members",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"projects",
-								"113",
+								"11",
 								"assign-members"
 							]
 						}
@@ -445,7 +445,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"test task 5\",\n    \"project_id\": 113,\n    \"description\": \"dsfsdgsdg\",\n    \"status\": \"todo\",\n    \"priority\": \"low\",\n    \"due_at\": \"2026-01-01\",\n    \"assignee_id\": \"b3881a60-989f-4e73-95b6-5cb492b732fd\"\n}",
+							"raw": "{\n    \"title\": \"test task 2\",\n    \"project_id\": 113,\n    \"description\": \"dsfsdgsdg\",\n    \"status\": \"todo\",\n    \"priority\": \"low\",\n    \"due_at\": \"2026-01-01\",\n    \"assignee_id\": \"b3881a60-989f-4e73-95b6-5cb492b732fd\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -453,13 +453,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/tasks/63",
+							"raw": "{{url}}/tasks/66",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"tasks",
-								"63"
+								"66"
 							]
 						}
 					},
@@ -556,14 +556,42 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/tasks/786/add-comment",
+							"raw": "{{url}}/tasks/65/add-comment",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"tasks",
-								"786",
+								"65",
 								"add-comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tasks/65",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks",
+								"65"
 							]
 						}
 					},
@@ -608,6 +636,46 @@
 							],
 							"path": [
 								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"unread\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/notifications/51",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"notifications",
+								"51"
 							]
 						}
 					},
@@ -665,6 +733,34 @@
 								"notifications",
 								"1",
 								"set-as-read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set-all-as-read",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/notifications/set-all-as-read",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"notifications",
+								"set-all-as-read"
 							]
 						}
 					},

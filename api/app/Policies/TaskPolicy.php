@@ -32,7 +32,7 @@ class TaskPolicy
 
     /**
      * @param User $user
-     * @param Project $task
+     * @param Project|null $project
      * @return bool
      */
     public function create(User $user, ?Project $project = null): bool

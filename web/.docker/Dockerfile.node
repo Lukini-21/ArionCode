@@ -8,6 +8,7 @@ COPY .docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 COPY . .
+RUN npm ci
 RUN npm run build
 
 # Production stage

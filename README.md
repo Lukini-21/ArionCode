@@ -1,28 +1,38 @@
 ## Arioncoder test api
 
-#### Task includes only API without frontend (I had only 2 days for this task). Some features are not ready. App has scheduler and queue worker. Queue and cache drivers - Redis
+#### Task includes API and a part of frontend. Some features are not ready. App has scheduler and queue worker. Queue and cache drivers - Redis
 ## Current Status & Future Improvements
 
 **Completed:**
 - Core framework features implemented
 - Business logic separated into service layer
 - Basic functionality operational
+- Socket connection backend + frontend for notifications
+- Queue and worker services for events and notifications
+- Data cache with Redis
+- Async entity change logging
+- Role policies to control access
 
 **Pending Implementation:**
 - Comprehensive test coverage
-- Frontend development
+- Full frontend development
 - Detailed code documentation
 - Dedicated cache management service
 - Localization system
 - Message template editor
-- SSL certificate generation
+- SSL certificate generation for production server
 
 **Technical Debt:**
 - Requires additional code comments
 - Missing unit/integration tests
 - Frontend components incomplete
 - Localization not implemented
-- SSL configuration pending
+- Implement socket messaging
+
+**To improve:**
+- Create advanced caching system to cache each user data separately
+- Make Auth Service for working with users from 3rd party systems
+- Make terraform configs for production deployment
 
 ### App start for local development (with xdebug)
 
@@ -36,5 +46,10 @@ automatically.
 ### [DB Diagram](diagram.drawio) (*https://app.diagrams.net/*)
 ### [Mocked User Credentials](api/config/demo.php)
 #### When user is logged in used first organization from organization list. Switch organizations by */switch* route.
-### WEB is available on http://localhost:5173 (local)
-### API is available on http://localhost:8080 (local)
+#### Run APP (local) - ``docker compose up -d``
+#### Run APP (production) - `` docker compose -f docker-compose-production.yml up -d``
+### 
+#### After application start ``.env`` files will be created automatically
+#### WEB is available on http://localhost:5173 (local)
+#### WEB is available on http://localhost:80 (production)
+#### API is available on http://localhost:8080

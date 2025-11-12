@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Contracts\User\Role;
 use App\Models\Project;
-use App\Models\Task;
 use App\Support\Auth\User;
 
 /**
@@ -24,7 +23,7 @@ class ProjectPolicy
             return true;
         }
 
-        // Project Manager или Member — only if member
+        // Project Manager or Member — only if member
         if ($project->members->contains('user_id', $user->uuid)) {
             return true;
         }
