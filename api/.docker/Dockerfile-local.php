@@ -4,7 +4,10 @@ FROM php:8.3-fpm-alpine
 RUN apk add --no-cache git zip unzip curl libzip-dev oniguruma-dev icu-dev autoconf make g++ linux-headers \
 && docker-php-ext-install pdo pdo_mysql intl mbstring zip bcmath pcntl \
 && pecl install redis \
-&& docker-php-ext-enable redis \
+&& docker-php-ext-enable redis
+
+RUN pecl install xdebug \
+&& docker-php-ext-enable xdebug \
 && apk del autoconf make g++ linux-headers
 
 # Composer

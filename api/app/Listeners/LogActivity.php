@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\AbstractEntityAction;
+use App\Events\LogAction;
 use App\Models\ActivityLog;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,12 +22,12 @@ class LogActivity implements ShouldQueue
     /**
      * Handle the event.
      */
-    public function handle(AbstractEntityAction $event): void
+    public function handle(LogAction $event): void
     {
         ActivityLog::create([
             'subject_type' => $event->entityType,
             'subject_id' => $event->entity->id ?? null,
-            'action' => class_basename($event),
+            'action' => $event->action->value,
             'actor_id' => $event->actor?->uuid ?? null,
             'changes' => json_encode($event->entity->toArray()),
         ]);
