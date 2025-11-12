@@ -3,6 +3,14 @@ set -e
 
 cd /var/www/html
 
+if [ ! -f .env ]; then
+    echo ".env not found. Copying from .env.example..."
+    cp .env.example .env
+    echo ".env file created from .env.example"
+else
+    echo ".env file already exists"
+fi
+
 # --- Wait for MySQL ---
 echo "⏳ Waiting for database to be ready..."
 until php -r "try { new PDO('mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD')); echo 'OK'; } catch (Exception \$e) { exit(1); }"; do
@@ -45,12 +53,9 @@ elif [ "$APP_ROLE" = "scheduler" ]; then
     php artisan schedule:run --verbose --no-interaction
     sleep 60
   done
-else
-  echo "✅ Starting php-fpm..."
-  exec php-fpm
 fi
 
-# --- Cache config/routes to improve perf (optional) ---
+# --- Cache  ---
 echo "🚀 Caching configuration..."
 php artisan config:clear
 php artisan route:clear
@@ -59,6 +64,9 @@ php artisan cache:clear
 php artisan config:cache
 php artisan route:cache || true
 
+if [ "$APP_ROLE" = "socket" ]; then
+php artisan reverb:start
+fi
 
 echo "✅ Ready. Starting php-fpm..."
 exec php-fpm

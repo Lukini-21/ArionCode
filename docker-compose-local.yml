@@ -94,18 +94,37 @@ services:
   webdev:
     build:
       context: web
-      dockerfile: .docker/Dockerfile.node
+      dockerfile: .docker/Dockerfile.node.local
     container_name: webdev
     env_file:
       - ./api/.env
     working_dir: /app
-    command: sh -lc "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
     volumes:
       - ./web:/app
     ports:
       - "${LOCAL_DEV_PORT:-5173}:5173"
     environment:
       - VITE_API_BASE=http://localhost:${PORT:-8080}/api
+      - VITE_WS_URL=ws://localhost:${PORT:-8080}/api/ws/notifications
+    networks:
+      - appnet
+
+  reverb:
+    build:
+      context: ./api
+      dockerfile: .docker/Dockerfile-local.php
+    container_name: reverb
+    environment:
+      APP_ROLE: socket
+    depends_on:
+      - app
+      - redis
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api:/var/www/html
+    ports:
+      - "${REVERB_PORT:-8081}:${LOCAL_PORT:-8080}"
     networks:
       - appnet
 
