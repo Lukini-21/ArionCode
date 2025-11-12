@@ -46,7 +46,7 @@ automatically.
 ### [DB Diagram](diagram.drawio) (*https://app.diagrams.net/*)
 ### [Mocked User Credentials](api/config/demo.php)
 #### When user is logged in used first organization from organization list. Switch organizations by */switch* route.
-#### Run APP (local) - ``docker compose up -d``
+#### Run APP (local) - ``docker compose up -d`` (preferable)
 #### Run APP (production) - `` docker compose -f docker-compose-production.yml up -d``
 ### 
 #### After application start ``.env`` files will be created automatically
