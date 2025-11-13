@@ -23,6 +23,7 @@
 - SSL certificate generation for production server
 
 **Technical Debt:**
+- SCRF token check
 - Requires additional code comments
 - Missing unit/integration tests
 - Frontend components incomplete
