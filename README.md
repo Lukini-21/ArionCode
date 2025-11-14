@@ -37,7 +37,8 @@
 
 ### App start for local development (with xdebug)
 
-docker compose -f docker-compose-local.yml up -d
+#### Run APP (local) - ``docker compose up -d`` (preferable)
+#### Run APP (production) - `` docker compose -f docker-compose-production.yml up -d``
 
 When application run first time in database migrations and seeders will run
 automatically.
@@ -47,9 +48,7 @@ automatically.
 ### [DB Diagram](diagram.drawio) (*https://app.diagrams.net/*)
 ### [Mocked User Credentials](api/config/demo.php)
 #### When user is logged in used first organization from organization list. Switch organizations by */switch* route.
-#### Run APP (local) - ``docker compose up -d`` (preferable)
-#### Run APP (production) - `` docker compose -f docker-compose-production.yml up -d``
-### 
+
 #### After application start ``.env`` files will be created automatically
 #### WEB is available on http://localhost:5173 (local)
 #### WEB is available on http://localhost:80 (production)
